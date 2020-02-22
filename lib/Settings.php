@@ -137,7 +137,7 @@ class Settings {
 
     public function admin_enqueue_scripts($hook) {
         if ($hook == 'toplevel_page_' . $this->page_id) {
-            wp_enqueue_script($this->page_id . '-admin-js', Helper::get_file_url(dirname(__FILE__).'/assets/js/settings.min.js'), ['jquery'], null, true);
+            wp_enqueue_script($this->page_id . '-admin-js', \Sovit\Helper::get_file_url(dirname(__FILE__).'/assets/js/settings.min.js'), ['jquery'], null, true);
             
         }
     }
