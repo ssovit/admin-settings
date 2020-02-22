@@ -35,10 +35,12 @@ class Controls
 
 	private static function checkbox(array $field)
 	{
-		echo '<label>';
+		echo '<label class="switch">';
 		echo '<input type="checkbox" id="'.esc_attr($field['id']).'" name="'.esc_attr($field['name']).'" value="yes" ';
 		checked($field['value'], 'yes');
 		echo ' />';
+		echo '<span></span>';
+		echo '</label>';
 		if (!empty($field['sub_desc'])) {
 			echo $field['sub_desc'];
 		}
