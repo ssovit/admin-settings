@@ -246,7 +246,7 @@ class Settings {
     }
 
     public function register_setting_field($field_id, $field, $section_id, $prefix = false, $value = false) {
-        $controls_class_name = 'Controls';
+        $controls_class_name = '\Sovit\Controls';
         if (false === $prefix) {
             $prefix = $this->setting_key;
         }
