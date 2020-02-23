@@ -141,8 +141,10 @@ if (!class_exists("\Sovit\Settings")) {
          */
         public function admin_enqueue_scripts($hook) {
             if ($hook == 'toplevel_page_' . $this->page_id) {
-                wp_enqueue_script($this->page_id . '-admin-js', \Sovit\Helper::get_file_url(dirname(__FILE__) . '/assets/settings.min.js'), ['jquery'], null, true);
-                wp_enqueue_style('wppress-setting-css', \Sovit\Helper::get_file_url(dirname(__FILE__) . "/assets/settings.min.css"), []);
+                wp_register_script('pickr', \Sovit\Helper::get_file_url(dirname(__FILE__) . '/assets/pickr.min.js'), ['jquery'], null, true);
+                wp_enqueue_script($this->page_id . '-setting-js', \Sovit\Helper::get_file_url(dirname(__FILE__) . '/assets/settings.min.js'), ['jquery','pickr'], null, true);
+                wp_register_style('pickr-css', \Sovit\Helper::get_file_url(dirname(__FILE__) . "/assets/pickr.css"), []);
+                wp_enqueue_style($this->page_id . '-setting-css', \Sovit\Helper::get_file_url(dirname(__FILE__) . "/assets/settings.min.css"), ['pickr-css']);
 
             }
         }

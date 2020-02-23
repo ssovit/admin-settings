@@ -62,15 +62,15 @@ class Controls {
             $field['value'] = [];
         }
         foreach ($field['options'] as $option) {
-            echo '<div><label class="switch">';
+            echo '<p><label class="switch">';
             echo '<input type="checkbox" name="' . esc_attr($field['name']) . '[]" value="' . esc_attr($option['value']) . '" ';
             checked(\in_array($option['value'], $field['value']));
             echo '/>';
             echo '<span></span>';
 
-            echo '</label>';
+            echo '</label> ';
             echo $option['name'];
-            echo '</div>';
+            echo '</p>';
         }
         if (!empty($field['sub_desc'])) {
             echo $field['sub_desc'];
@@ -88,7 +88,7 @@ class Controls {
     private static function colorpicker(array $field) {
         $attributes = Helper::render_html_attributes($field['attributes']);
         echo '<input type="hidden" id="' . esc_attr($field['id']) . '" name="' . esc_attr($field['name']) . '" value="' . esc_attr($field['value']) . '"/>';
-        echo '<span class="wppress-colorpicker" data-value="' . esc_attr($field['value']) . '" data-target="' . esc_attr($field['id']) . '" data-default="' . $field['std'] . '"></span>';
+        echo '<span class="colorpicker-pickr" data-value="' . esc_attr($field['value']) . '" data-target="' . esc_attr($field['id']) . '" data-default="' . $field['std'] . '"></span>';
         if (!empty($field['sub_desc'])) {
             echo $field['sub_desc'];
         }
