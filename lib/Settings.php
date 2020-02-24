@@ -379,7 +379,7 @@ if (!class_exists("\Sovit\Settings")) {
         protected function create_tabs() {
             $tabs = [
                 'general' => [
-                    'label'    => esc_html__('General', 'wppress-stock-photos'),
+                    'label'    => esc_html__('General'),
                     'sections' => [],
                 ],
             ];

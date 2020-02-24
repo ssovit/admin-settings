@@ -123,7 +123,7 @@ if (!class_exists("\Sovit\Controls")) {
 
             echo '<select name="' . esc_attr($field['name']) . '" id="' . $field['id'] . '" ' . $attributes . '>';
             if (!empty($field['show_select'])) {
-                echo '<option value="">— ' . esc_html__('Select', 'wppress-stock-photos') . ' —</option>';
+                echo '<option value="">— ' . esc_html__('Select') . ' —</option>';
             }
 
             foreach ($field['options'] as $value => $label) {
