@@ -3,6 +3,11 @@ namespace Sovit;
 if (!class_exists("\Sovit\Settings")) {
     class Settings {
         /**
+         * @var mixed
+         */
+        public $page = null;
+
+        /**
          * @var string
          */
         private $capability = "manage_options";
@@ -15,7 +20,17 @@ if (!class_exists("\Sovit\Settings")) {
         /**
          * @var mixed
          */
+        private $menu_position = null;
+
+        /**
+         * @var mixed
+         */
         private $menu_title;
+
+        /**
+         * @var mixed
+         */
+        private $mernu_parent = false;
 
         /**
          * @var mixed
@@ -26,11 +41,6 @@ if (!class_exists("\Sovit\Settings")) {
          * @var mixed
          */
         private $page_title = "Settings";
-
-        /**
-         * @var mixed
-         */
-        private $priority = 20;
 
         /**
          * @var string
@@ -73,7 +83,7 @@ if (!class_exists("\Sovit\Settings")) {
          * @param $section_id
          * @param $field_id
          * @param array $field_args
-         * @return null
+         * @return mixed
          */
         public function add_field($tab_id, $section_id, $field_id, array $field_args) {
             $this->ensure_tabs();
@@ -140,9 +150,10 @@ if (!class_exists("\Sovit\Settings")) {
          * @param $hook
          */
         public function admin_enqueue_scripts($hook) {
-            if ($hook == 'toplevel_page_' . $this->page_id) {
+
+            if ($hook == $this->page) {
                 wp_register_script('pickr', \Sovit\Helper::get_file_url(dirname(__FILE__) . '/assets/pickr.min.js'), ['jquery'], null, true);
-                wp_enqueue_script($this->page_id . '-setting-js', \Sovit\Helper::get_file_url(dirname(__FILE__) . '/assets/settings.min.js'), ['jquery','pickr'], null, true);
+                wp_enqueue_script($this->page_id . '-setting-js', \Sovit\Helper::get_file_url(dirname(__FILE__) . '/assets/settings.min.js'), ['jquery', 'pickr'], null, true);
                 wp_register_style('pickr-css', \Sovit\Helper::get_file_url(dirname(__FILE__) . "/assets/pickr.css"), []);
                 wp_enqueue_style($this->page_id . '-setting-css', \Sovit\Helper::get_file_url(dirname(__FILE__) . "/assets/settings.min.css"), ['pickr-css']);
 
@@ -150,14 +161,27 @@ if (!class_exists("\Sovit\Settings")) {
         }
 
         public function admin_menu() {
-            $page = add_menu_page(
-                $this->page_title,
-                $this->menu_title,
-                $this->capability,
-                $this->page_id,
-                [$this, 'display_settings_page'],
-                $this->menu_icon
-            );
+            if ($this->menu_parent === false) {
+                $this->page = add_menu_page(
+                    $this->page_title,
+                    $this->menu_title,
+                    $this->capability,
+                    $this->page_id,
+                    [$this, 'display_settings_page'],
+                    $this->menu_icon,
+                    $this->menu_position
+                );
+            } else {
+                $this->page = add_submenu_page(
+                    $this->menu_parent,
+                    $this->page_title,
+                    $this->menu_title,
+                    $this->capability,
+                    $this->page_id,
+                    [$this, 'display_settings_page'],
+                    $this->menu_position
+                );
+            }
         }
 
         public function display_settings_page() {
@@ -247,6 +271,13 @@ if (!class_exists("\Sovit\Settings")) {
             $field['id']    = sanitize_title($field['name']);
 
             return $field;
+        }
+
+        /**
+         * @return mixed
+         */
+        public function get_page() {
+            return $this->page;
         }
 
         /**
@@ -341,6 +372,24 @@ if (!class_exists("\Sovit\Settings")) {
         }
 
         /**
+         * @param $parent
+         * @return mixed
+         */
+        public function set_menu_parent($parent) {
+            $this->menu_parent = $parent;
+            return $this;
+        }
+
+        /**
+         * @param $position
+         * @return mixed
+         */
+        public function set_menu_position($position) {
+            $this->menu_position = $position;
+            return $this;
+        }
+
+        /**
          * @param $title
          * @return mixed
          */
@@ -353,8 +402,8 @@ if (!class_exists("\Sovit\Settings")) {
          * @param $id
          * @return mixed
          */
-        public function set_page_id($id) {
-            $this->page_id = $id;
+        public function set_page_id($page_id) {
+            $this->page_id = $page_id;
             return $this;
         }
 
